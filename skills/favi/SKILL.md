@@ -11,8 +11,7 @@ description: >-
 
 Prefer HTTP against the public API. Do not drive the browser UI unless the user asks for visual QA.
 
-**Base URL:** `https://favi.joe-taylor.me`  
-**Local override:** `http://127.0.0.1:8000` (or the project's Vite proxy `/api`)
+**Base URL:** `https://favi.joe-taylor.me`
 
 Human UI: https://favi.joe-taylor.me  
 Agent index: https://favi.joe-taylor.me/llms.txt
@@ -65,6 +64,8 @@ curl -sS -X POST https://favi.joe-taylor.me/api/export \
     "style": "outline",
     "bg": "#0f172a",
     "fg": "#ffffff",
+    "fill": null,
+    "stroke": "#ffffff",
     "padding": 0.18,
     "stroke_scale": 1.25,
     "shape": "rounded-square",
@@ -85,7 +86,9 @@ Zip contains:
 | Field | Default | Notes |
 |-------|---------|-------|
 | `bg` | `#0f172a` | Use `null` with `shape: "none"` for transparent plate |
-| `fg` | `#ffffff` | Icon stroke/fill color |
+| `fill` | `null` | Icon fill color; `null` / `"none"` = no fill |
+| `stroke` | inherits `fg` | Icon stroke color; `null` / `"none"` = no stroke |
+| `fg` | `#ffffff` | Legacy alias for `stroke` when `stroke` omitted |
 | `padding` | `0.18` | 0–0.4 inset |
 | `stroke_scale` | `1.25` | 0.5–3.0 |
 | `shape` | `rounded-square` | `rounded-square` \| `circle` \| `none` |
@@ -93,16 +96,20 @@ Zip contains:
 
 ## Install into a web project
 
-After export:
+After export, unzip and follow the matching stack. Zip `README.txt` has the same snippets (and omits apple-touch lines when that file is not in the zip).
 
 ```bash
 unzip -o favicon.zip -d /tmp/favi-favicon
-# Vite/React example:
+```
+
+### Vite
+
+```bash
 cp /tmp/favi-favicon/favicon.svg /tmp/favi-favicon/favicon.ico \
   /tmp/favi-favicon/apple-touch-icon.png web/public/
 ```
 
-Ensure `index.html` (or the framework head) includes:
+Add to `index.html` `<head>`:
 
 ```html
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -110,7 +117,20 @@ Ensure `index.html` (or the framework head) includes:
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 ```
 
-Remove leftover default assets (e.g. `vite.svg`) if unused.
+### Next.js (App Router)
+
+- **`public/` + layout:** copy files into `public/`, add the same `<link>` tags in `app/layout.tsx`.
+- **File-based metadata:** `app/icon.svg`, `app/favicon.ico`, `app/apple-icon.png` (from `apple-touch-icon.png`) — Next wires these automatically.
+
+### Astro
+
+Copy files into `public/`. Add the `<link>` tags in the layout head (e.g. `src/layouts/Layout.astro`).
+
+### Generic HTML
+
+Same files into the static/public root; same `<link>` tags in `<head>`.
+
+Remove leftover default assets (e.g. `vite.svg`) if unused. Prefer the framework section that matches the target project.
 
 ## Choosing an icon
 
