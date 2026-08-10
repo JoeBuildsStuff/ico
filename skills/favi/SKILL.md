@@ -1,21 +1,21 @@
 ---
-name: ico
+name: favi
 description: >-
   Search free icon libraries and export favicon packages (SVG, ICO, apple-touch)
-  via the public ico API at ico.joe-taylor.me. Use when the user wants a favicon,
+  via the public favi API at favi.joe-taylor.me. Use when the user wants a favicon,
   app icon, tab icon, PWA icon, or to pick/recolor an icon from Lucide, Tabler,
   Phosphor, Hugeicons, or Remix Icon without opening the UI.
 ---
 
-# ico — favicon API skill
+# favi — favicon API skill
 
 Prefer HTTP against the public API. Do not drive the browser UI unless the user asks for visual QA.
 
-**Base URL:** `https://ico.joe-taylor.me`  
+**Base URL:** `https://favi.joe-taylor.me`  
 **Local override:** `http://127.0.0.1:8000` (or the project's Vite proxy `/api`)
 
-Human UI: https://ico.joe-taylor.me  
-Agent index: https://ico.joe-taylor.me/llms.txt
+Human UI: https://favi.joe-taylor.me  
+Agent index: https://favi.joe-taylor.me/llms.txt
 
 ## Workflow
 
@@ -29,19 +29,19 @@ Agent index: https://ico.joe-taylor.me/llms.txt
 ### Health
 
 ```bash
-curl -sS https://ico.joe-taylor.me/api/health
+curl -sS https://favi.joe-taylor.me/api/health
 ```
 
 ### List libraries
 
 ```bash
-curl -sS https://ico.joe-taylor.me/api/libraries
+curl -sS https://favi.joe-taylor.me/api/libraries
 ```
 
 ### Search icons
 
 ```bash
-curl -sS "https://ico.joe-taylor.me/api/icons?q=image&library=lucide&style=outline&limit=12"
+curl -sS "https://favi.joe-taylor.me/api/icons?q=image&library=lucide&style=outline&limit=12"
 ```
 
 Query params: `q`, `library`, `style`, `limit` (1–300), `offset`.
@@ -51,13 +51,13 @@ Each hit includes `library`, `name`, `style`, and raw `svg`.
 ### Exact icon
 
 ```bash
-curl -sS "https://ico.joe-taylor.me/api/icons/lucide/image?style=outline"
+curl -sS "https://favi.joe-taylor.me/api/icons/lucide/image?style=outline"
 ```
 
 ### Export favicon zip
 
 ```bash
-curl -sS -X POST https://ico.joe-taylor.me/api/export \
+curl -sS -X POST https://favi.joe-taylor.me/api/export \
   -H 'Content-Type: application/json' \
   -d '{
     "library": "lucide",
@@ -96,10 +96,10 @@ Zip contains:
 After export:
 
 ```bash
-unzip -o favicon.zip -d /tmp/ico-favicon
+unzip -o favicon.zip -d /tmp/favi-favicon
 # Vite/React example:
-cp /tmp/ico-favicon/favicon.svg /tmp/ico-favicon/favicon.ico \
-   /tmp/ico-favicon/apple-touch-icon.png web/public/
+cp /tmp/favi-favicon/favicon.svg /tmp/favi-favicon/favicon.ico \
+  /tmp/favi-favicon/apple-touch-icon.png web/public/
 ```
 
 Ensure `index.html` (or the framework head) includes:
@@ -122,7 +122,7 @@ Remove leftover default assets (e.g. `vite.svg`) if unused.
 ## Install this skill
 
 ```bash
-npx skills add JoeBuildsStuff/ico
+npx skills add JoeBuildsStuff/favi
 # or specifically:
-npx skills add JoeBuildsStuff/ico --skill ico
+npx skills add JoeBuildsStuff/favi --skill favi
 ```
